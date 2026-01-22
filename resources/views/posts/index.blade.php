@@ -17,8 +17,13 @@
                         {{ $post->title }}
                     </a>
                 </h3>
-                <img src="/storage/cover_images/{{ $post->cover_image }}" class="img-fluid">
-                
+                {{--<img src="/storage/cover_images/{{ $post->cover_image }}" class="img-fluid">--}}
+                <img
+                    src="{{ asset('storage/cover_images/' . ($post->cover_image ?? 'noimage.jpg')) }}"
+                    class="img-fluid mb-2"
+                    alt="Post cover image">
+
+
                 {{-- Author --}}
                 <small class="text-muted">
                     By {{ $post->user->name ?? 'Unknown' }} ·
@@ -46,11 +51,7 @@
         </div>
     @endforeach
     <div>    
-    {{ $posts->links() }}
-    </div>
-    @endsection
-    {{-- Pagination --}}
-    {{--<div class="mt-4">
         {{ $posts->links() }}
     </div>
-@endsection --}}
+    @endsection
+

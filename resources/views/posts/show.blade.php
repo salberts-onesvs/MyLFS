@@ -18,18 +18,16 @@
                     Go Back
                 </a>
 
-                {!! Form::open([
+                    {!! Form::open([
                     'route' => ['posts.destroy', $post->id],
                     'method' => 'DELETE'
-                ]) !!}
-                {{ Form::submit('Delete', [
-                    'class' => 'btn btn-danger',
-                    'onclick' => 'return confirm("Are you sure?")'
-                ]) }}
-                <!--
-                    {{ Form::submit('Delete', ['class' => 'btn btn-danger']) }}
-                {!! Form::close() !!}
-                -->
+                    ]) !!}
+                    {{ Form::submit('Delete', [
+                        'class' => 'btn btn-danger',
+                        'onclick' => 'return confirm("Are you sure?")'
+                    ]) }}
+            {!! Form::close() !!}
+
             </div>
         @else
             <a href="{{ url()->previous() }}" class="btn btn-outline-primary mt-3">

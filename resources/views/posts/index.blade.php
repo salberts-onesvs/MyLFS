@@ -17,7 +17,8 @@
                         {{ $post->title }}
                     </a>
                 </h3>
-
+                <img src="/storage/cover_images/{{ $post->cover_image }}" class="img-fluid">
+                
                 {{-- Author --}}
                 <small class="text-muted">
                     By {{ $post->user->name ?? 'Unknown' }} ·

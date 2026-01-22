@@ -44,21 +44,42 @@ class PostsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-   public function store(Request $request)
-{
-    $validated = $request->validate([
-        'title' => 'required|string|max:255',
-        'body'  => 'required|string',
+public function store(Request $request)
+    {
+    $this->validate($request, [
+    'title' => 'required|string|max:255',
+    'body' => 'required',
+    'cover_image' => 'sometimes|image|mimes:jpg,jpeg,png,gif|max:2048',
     ]);
 
-    Post::create([
-        'title'   => $validated['title'],
-        'body'    => $validated['body'],
-        'user_id' => auth()->id(),
-    ]);
 
-    return redirect('/posts')->with('success', 'Post created!');
+    // Default image
+    $fileNameToStore = 'noimage.jpg';
+
+    // Handle file upload (ONLY if present)
+    if ($request->hasFile('cover_image')) {
+        $fileNameWithExt = $request->file('cover_image')->getClientOriginalName();
+        $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+        $extension = $request->file('cover_image')->getClientOriginalExtension();
+        $fileNameToStore = $fileName.'_'.time().'.'.$extension;
+
+        $request->file('cover_image')->storeAs(
+            'public/cover_images',
+            $fileNameToStore
+        );
+    }
+
+    // Create Post
+    $post = new Post;
+    $post->title = $request->input('title');
+    $post->body = $request->input('body');
+    $post->cover_image = $fileNameToStore;
+    $post->user_id = auth()->id();
+    $post->save();
+
+    return redirect('/posts')->with('success', 'Post Created');
 }
+
 
 
 
